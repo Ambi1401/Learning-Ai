@@ -1,0 +1,47 @@
+<div class="container">
+  <header>
+    <h1>AI Playground</h1>
+    <p>Explore multiple AI providers from one interface.</p>
+  </header>
+
+  <section class="input-section">
+    <label for="provider">Select AI Provider</label>
+
+    <select id="provider" [(ngModel)]="provider">
+      <option value="openai">OpenAI</option>
+      <option value="gemini">Google Gemini</option>
+    </select>
+
+    <label for="prompt">Enter your prompt</label>
+
+    <textarea id="prompt" [(ngModel)]="prompt" placeholder="Ask anything..." rows="6"> </textarea>
+
+    <button (click)="generateResponse()" [disabled]="loading() || !prompt.trim()">
+      {{ loading() ? 'Generating...' : 'Generate Response' }}
+    </button>
+  </section>
+
+  <section class="response-section">
+    <h2>AI Response</h2>
+
+    @if (loading()) {
+      <p class="status">Generating response...</p>
+    }
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    @if (response()) {
+      <div class="response-info">Provider: {{ provider }} | Model: {{ selectedModel() }}</div>
+
+      <div class="response-content">
+        {{ response() }}
+      </div>
+    }
+
+    @if (!response() && !loading() && !error()) {
+      <p class="placeholder">Your AI response will appear here.</p>
+    }
+  </section>
+</div>
